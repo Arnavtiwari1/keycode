@@ -1,12 +1,12 @@
-document.addEventListener('keydown', (event) => {
-  const key = event.key === ' ' ? 'Space' : event.key;
-  const keycode = event.keyCode || event.which;
-
-  document.getElementById('key').textContent = key;
-  document.getElementById('keycode').textContent = keycode;
-});
-
 document.addEventListener('DOMContentLoaded', () => {
+  const keyElement = document.getElementById('key');
+  const keyCodeElement = document.getElementById('keycode');
+  
+  const updateDisplay = (key, keycode) => {
+    keyElement.textContent = key;
+    keyCodeElement.textContent = keycode;
+  };
+
   if (/Mobi|Android/i.test(navigator.userAgent)) {
     const input = document.createElement('input');
     input.type = 'text';
@@ -21,18 +21,19 @@ document.addEventListener('DOMContentLoaded', () => {
     input.addEventListener('input', (event) => {
       const key = event.data || '--';
       const keycode = key.charCodeAt(0) || '--';
-
-      document.getElementById('key').textContent = key;
-      document.getElementById('keycode').textContent = keycode;
+      updateDisplay(key, keycode);
     });
 
     document.body.appendChild(input);
-
-    // Focus the input on tap
     document.body.addEventListener('click', () => {
       input.focus();
     });
+
+  } else {
+    document.addEventListener('keydown', (event) => {
+      const key = event.key === ' ' ? 'Space' : event.key;
+      const keycode = event.keyCode || event.which;
+      updateDisplay(key, keycode);
+    });
   }
 });
-
-  
