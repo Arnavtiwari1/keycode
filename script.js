@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
   const keyElement = document.getElementById('key');
   const keyCodeElement = document.getElementById('keycode');
-  
-  const updateDisplay = (key, keycode) => {
+
+  const updateKeyInfo = (key, keycode) => {
     keyElement.textContent = key;
     keyCodeElement.textContent = keycode;
   };
@@ -19,12 +19,14 @@ document.addEventListener('DOMContentLoaded', () => {
     input.autocomplete = 'off';
 
     input.addEventListener('input', (event) => {
-      const key = event.data || '--';
+      const key = event.target.value.slice(-1) || '--';
       const keycode = key.charCodeAt(0) || '--';
-      updateDisplay(key, keycode);
+      updateKeyInfo(key, keycode);
     });
 
     document.body.appendChild(input);
+    input.focus();
+
     document.body.addEventListener('click', () => {
       input.focus();
     });
@@ -33,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.addEventListener('keydown', (event) => {
       const key = event.key === ' ' ? 'Space' : event.key;
       const keycode = event.keyCode || event.which;
-      updateDisplay(key, keycode);
+      updateKeyInfo(key, keycode);
     });
   }
 });
